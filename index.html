@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DARKBEAT | Delta RPG</title>
+<style>
+:root{color-scheme:dark;--pink:#f76fa7;--purple:#a174ed;--gold:#ffdf68}*{box-sizing:border-box}body{margin:0;background:#08070f;color:white;font:16px 'Courier New',monospace;font-weight:bold;min-height:100vh}body:before{content:"";position:fixed;inset:0;z-index:-1;background:repeating-linear-gradient(0deg,transparent 0 46px,#21103955 47px 48px),repeating-linear-gradient(90deg,transparent 0 46px,#21103955 47px 48px);transform:perspective(400px) rotateX(35deg) scale(1.5);opacity:.55}.wrap{max-width:1050px;margin:auto;padding:24px}h1{font-size:clamp(30px,5vw,56px);letter-spacing:5px;color:var(--pink);text-shadow:4px 4px #51235f;margin:8px 0}small,.sub{color:#ad9dbd}.frame{border:3px solid white;background:#0b0a16;box-shadow:6px 6px 0 #3a1a58;padding:18px;margin:14px 0}button,input,select{font:inherit}button{border:2px solid white;background:#18102a;color:white;padding:11px 16px;cursor:pointer}button:hover,button:focus{background:#582f7b;outline:2px solid var(--pink)}button:disabled{opacity:.35;cursor:not-allowed}input,select{border:2px solid #9989b0;background:#11101e;color:white;padding:11px;max-width:100%;min-width:0}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.row>*{flex:1}label{display:block;color:var(--gold);margin:12px 0 7px}.muted{color:#baa9c9}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.slot{padding:9px;min-width:0;border:2px solid #67517a;background:#171025;min-height:95px;text-align:left}.slot.active{border-color:var(--pink)}.slot strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.slot small{font-size:11px}.hp{height:9px;background:#34203c;margin:7px 0}.hp>i{display:block;height:100%;background:var(--pink)}.boss{margin:18px 0 10px}.bossbar{height:24px;background:#321629;border:2px solid #fff}.bossbar>div{height:100%;background:linear-gradient(90deg,#c41c55,#ff618e);transition:width .2s}.layout{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:18px}.arena{position:relative;background:#080710;border:3px solid white;height:390px;overflow:hidden}.tracks{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,1fr)}.track{border-right:1px solid #41314f;background:linear-gradient(180deg,#100b1a,#1b102c)}.track:nth-child(even){background:linear-gradient(180deg,#120a1b,#231331)}.judgeLine{position:absolute;bottom:60px;height:4px;background:white;left:0;right:0;box-shadow:0 0 18px #fff}.keyLabels{position:absolute;bottom:0;height:54px;left:0;right:0;display:grid;grid-template-columns:repeat(4,1fr)}.keyLabels div{text-align:center;padding:14px;border:1px solid #46365a;font-size:23px;color:var(--gold)}.note{position:absolute;width:calc(25% - 12px);height:20px;border:2px solid #fff;border-radius:3px;box-shadow:0 0 13px currentColor}.note[data-lane="0"]{color:#eb6c98;background:#b63d75}.note[data-lane="1"]{color:#ebc36c;background:#ad8034}.note[data-lane="2"]{color:#74e1bc;background:#287a66}.note[data-lane="3"]{color:#aaa1ff;background:#5750a1}.panel{border:2px solid #83699f;padding:15px;background:#120e20}.number{font-size:36px;color:var(--gold)}#judgement{text-align:center;font-size:28px;height:40px;color:#ffdb66;text-shadow:2px 2px #552d6e}.help{font-size:13px;line-height:1.8}.pills{color:var(--pink);letter-spacing:2px}.commands{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.commands>div{border:2px solid #a58dba;text-align:center;padding:12px;color:var(--gold)}.status{color:#e0c0f1;font-size:13px;line-height:1.6}#message{min-height:24px;color:#ffdd72}@media(max-width:720px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:12px}.arena{height:350px}.commands{grid-template-columns:repeat(2,1fr)}} 
+</style></head>
+<body><main class="wrap"><header><h1>✦ DARKBEAT ✦</h1><div class="sub">DELTA RPG • BATALHA RÍTMICA COOPERATIVA</div></header>
+<section class="frame" id="lobby"><h2>◈ ENTRAR NA BATALHA</h2><label>SEU NOME</label><input id="name" maxlength="18" value="Viajante" placeholder="Nome do personagem"><div class="row" style="margin-top:15px"><button id="create">✦ CRIAR SALA</button><input id="codeInput" maxlength="6" placeholder="CÓDIGO DA SALA"><button id="join">ENTRAR</button></div><p id="message"></p></section>
+<section class="frame hidden" id="game"><div class="row"><h2 style="margin:0">SALA <span id="roomCode" style="color:var(--gold)"></span></h2><button id="copy">COPIAR CÓDIGO</button><span id="connection" class="status">CONECTADO</span></div>
+<div class="boss"><div class="row"><strong>✦ BOSS — HP</strong><strong id="bossText" style="text-align:right">100 / 100</strong></div><div class="bossbar"><div id="bossFill" style="width:100%"></div></div></div>
+<div class="stats" id="slots"></div>
+<div class="row" style="margin:12px 0"><input id="rename" maxlength="18" placeholder="Alterar seu nome"><button id="saveName">SALVAR NOME</button><select id="difficulty"><option value="easy">FÁCIL</option><option value="normal" selected>NORMAL</option><option value="hard">DIFÍCIL</option></select><button id="start">INICIAR BATALHA</button><button id="reset" class="hidden">REINICIAR</button></div>
+<p id="phase" class="pills">AGUARDANDO JOGADORES...</p>
+<div class="layout"><div><div class="arena" id="arena"><div class="tracks"><div class="track"></div><div class="track"></div><div class="track"></div><div class="track"></div></div><div id="notes"></div><div class="judgeLine"></div><div class="keyLabels"><div>D</div><div>F</div><div>J</div><div>K</div></div></div><div id="judgement"></div></div>
+<aside class="panel"><div class="muted">PONTUAÇÃO</div><div class="number" id="score">0</div><p>COMBO <span id="combo">0</span></p><p class="muted">SEU SLOT: <b id="mySlot">—</b></p><hr style="border:1px solid #57426a"><p class="help">ACERTE AS NOTAS NA LINHA BRANCA USANDO <b>D F J K</b> OU AS SETAS.<br> CADA NOTA ACERTADA CAUSA <b>1 DE DANO</b> AO BOSS. TODOS ATACAM A MESMA BARRA DE 100 HP.</p><p class="status" id="feedback"></p></aside></div>
+<div class="commands"><div>⚔ FIGHT</div><div>✧ ACT</div><div>♥ PARTY</div><div>◆ DEFEND</div></div>
+</section><footer><small>Darkbeat é uma mecânica original de RPG inspirada na linguagem visual de jogos retrô.</small></footer></main>
+<script>
+const $=id=>document.getElementById(id);
+const state={socket:null,slot:-1,room:null,notes:[],seen:new Set(),lastRound:-1,lastMiss:new Set(),lastPhase:null};
+function msg(type,extra={}){if(state.socket?.readyState===1)state.socket.send(JSON.stringify({type,...extra}))}
+const WS=(location.protocol==='https:'?'wss://':'ws://')+location.host;
+function connect(task){const ws=new WebSocket(WS);state.socket=ws;ws.onopen=()=>msg(task.type,task);ws.onmessage=e=>{const d=JSON.parse(e.data);if(d.type==='error'){$('message').textContent=d.message;return}if(d.type==='joined'){state.slot=d.slot;$('lobby').classList.add('hidden');$('game').classList.remove('hidden')}$('connection').textContent='CONECTADO';if(d.type==='state')update(d)};ws.onclose=()=>{$('connection').textContent='DESCONECTADO — ATUALIZE A PÁGINA';$('start').disabled=true};ws.onerror=()=>{$('message').textContent='Não foi possível conectar ao servidor.'}}
+$('create').onclick=()=>connect({type:'create',name:$('name').value});$('join').onclick=()=>connect({type:'join',code:$('codeInput').value.trim().toUpperCase(),name:$('name').value});
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(state.room.code);$('feedback').textContent='Código copiado!'}catch{$('feedback').textContent='Código: '+state.room.code}};
+$('saveName').onclick=()=>msg('name',{name:$('rename').value});
+$('start').onclick=()=>msg('start',{difficulty:$('difficulty').value});
+$('reset').onclick=()=>msg('reset');
+let audio=null,playedBeat=-1;
+function tone(freq,volume=.055,duration=.09){try{audio??=new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type='square';o.frequency.value=freq;g.gain.setValueAtTime(volume,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}catch{}}
+function update(d){state.room=d;$('roomCode').textContent=d.code;$('bossText').textContent=d.boss+' / 100';$('bossFill').style.width=d.boss+'%';
+$('slots').innerHTML=d.players.map((p,i)=>'<button class="slot '+(i===state.slot?'active':'')+'" data-slot="'+i+'" '+(p?'disabled':'')+'><small>SLOT '+(i+1)+(i===d.host?' ★':'')+'</small><strong>'+escapeHtml(p?.name||'+ LIVRE')+'</strong><div class="hp"><i style="width:'+(p?.hp??0)+'%"></i></div><small>'+(p?p.score+' PTS':'CLIQUE PARA ENTRAR')+'</small></button>').join('');
+document.querySelectorAll('.slot:not([disabled])').forEach(el=>el.onclick=()=>msg('selectSlot',{slot:+el.dataset.slot}));
+const me=d.players[state.slot];$('mySlot').textContent=state.slot+1;$('score').textContent=me?.score??0;$('combo').textContent=me?.combo??0;
+$('start').disabled=state.slot!==d.host||d.phase==='playing';$('reset').classList.toggle('hidden',state.slot!==d.host||d.phase==='lobby');$('difficulty').disabled=state.slot!==d.host||d.phase==='playing';
+if(d.round!==state.lastRound){state.lastRound=d.round;state.seen.clear();state.lastMiss.clear();playedBeat=-1;}
+if(d.phase==='victory'&&state.lastPhase!=='victory'){$('feedback').textContent='✦ VITÓRIA! O grupo derrotou o boss!';tone(660,.08,.3)}
+state.lastPhase=d.phase;
+$('phase').textContent=d.phase==='lobby'?'AGUARDANDO JOGADORES...':d.phase==='victory'?'✦ VITÓRIA DO GRUPO ✦':'BATALHA EM ANDAMENTO';
+}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function beatMs(){return state.room?.difficulty==='easy'?650:state.room?.difficulty==='hard'?360:480}
+function maxNotes(){return state.room?.difficulty==='easy'?100:state.room?.difficulty==='hard'?220:160}
+function noteLane(i){return (i*7+Math.floor(i/4)*3)%4}
+function hit(lane){
+ if(state.room?.phase!=='playing')return;
+ const now=Date.now(),offset=now-state.room.startedAt-1500,interval=beatMs();
+ let best=-1,diff=Infinity;
+ for(let i=Math.max(0,Math.floor((offset-200)/interval));i<=Math.min(maxNotes()-1,Math.ceil((offset+200)/interval));i++){
+  if(noteLane(i)!==lane||state.seen.has(i))continue;
+  const delta=offset-i*interval;if(Math.abs(delta)<Math.abs(diff)){best=i;diff=delta}
+ }
+ if(best<0||Math.abs(diff)>170)return;
+ state.seen.add(best);msg('hit',{id:best,timing:Math.round(diff)});
+ $('judgement').textContent=Math.abs(diff)<55?'PERFECT!':Math.abs(diff)<110?'GREAT!':'GOOD!';
+ tone([262,330,392,523][lane],.065,.12);
+}
+const keys={d:0,f:1,j:2,k:3,ArrowLeft:0,ArrowDown:1,ArrowUp:2,ArrowRight:3};
+document.addEventListener('keydown',e=>{if(document.activeElement?.tagName==='INPUT'||document.activeElement?.tagName==='SELECT')return;if(keys[e.key]!==undefined){e.preventDefault();if(!e.repeat)hit(keys[e.key])}});
+function frame(){
+ const room=state.room,notes=$('notes');let output='';
+ if(room?.phase==='playing'){
+  const now=Date.now(),int=beatMs(),t=now-room.startedAt-1500,first=Math.max(0,Math.floor((t-400)/int)),last=Math.min(maxNotes()-1,Math.ceil((t+1600)/int));
+  const h=$('arena').clientHeight,judge=h-60;
+  for(let i=first;i<=last;i++){
+   const delta=i*int-t, lane=noteLane(i),y=judge-delta/1600*(judge-20);
+   if(!state.seen.has(i)&&y>-30&&y<h)output+='<div class="note" data-lane="'+lane+'" style="left:calc('+(lane*25)+'% + 6px);top:'+y+'px"></div>';
+   if(delta < -180&&!state.seen.has(i)&&!state.lastMiss.has(i)){state.lastMiss.add(i);msg('miss');$('judgement').textContent='MISS'}
+  }
+  const tick=Math.floor((now-room.startedAt)/int);
+  if(tick>playedBeat&&tick>=0){playedBeat=tick;tone(tick%4===0?130:90,.012,.035)}
+ }notes.innerHTML=output;requestAnimationFrame(frame)
+}frame();
+</script></body></html>
