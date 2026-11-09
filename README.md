@@ -1,6 +1,8 @@
 # DARKBEAT Multiplayer
 
-Jogo de ritmo cooperativo para até cinco jogadores com chefe de 100 HP, salas por código e placar compartilhado.
+Jogo de ritmo cooperativo para até cinco jogadores com chefe de 100 HP, salas por código, placar compartilhado e acessórios pixel-art para personalizar o coração de cada personagem.
+
+Escolha entre seis acessórios no lobby ou durante a sala. A escolha fica salva neste navegador e é exibida para os outros jogadores conectados.
 
 ## Iniciar localmente
 
